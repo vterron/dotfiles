@@ -1,4 +1,4 @@
-"""Run custom commands when starting a Python interactive session."""
+#! /usr/bin/env python
 
 import os
 import sys

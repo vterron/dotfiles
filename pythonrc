@@ -1,5 +1,11 @@
 #! /usr/bin/env python
 
+""" If the PYTHONSTARTUP environment variable points to this file, the below
+commands are executed before the first prompt is displayed in interactive mode.
+This happens in the same namespace where interactive commands are executed, so
+the objects defined or imported here can be used without qualification in the
+interactive session. """
+
 import atexit
 import os
 import readline

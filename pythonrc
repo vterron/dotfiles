@@ -10,7 +10,7 @@ import sys
 readline.parse_and_bind("tab: complete")
 
 # Enable cross-session history
-history_file = os.path.join(os.environ["HOME"], ".python_history")
+history_file = os.path.expanduser('~/.python_history')
 if os.path.exists(history_file):
     readline.read_history_file(history_file)
 atexit.register(readline.write_history_file, history_file)

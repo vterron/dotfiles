@@ -1,6 +1,9 @@
-#! /usr/bin/env python
+B1;2403;0c#! /usr/bin/env python
 
+import atexit
 import os
+import readline
+import rlcompleter
 import sys
 
 def _print_debug(message):
@@ -11,40 +14,24 @@ def _print_debug(message):
     """
     print >> sys.stderr, message
 
-# Enable tab completion.
+# Enable tab completion
+readline.parse_and_bind("tab: complete")
+
+# Enable cross-session history
+history_file = os.path.join(os.environ["HOME"], ".python_history")
 try:
-    import readline
-except ImportError:
-    _print_debug("Module readline not available.")
-else:
-    import rlcompleter
-    readline.parse_and_bind("tab: complete")
-    del rlcompleter
-    del readline
+    readline.read_history_file(history_file)
+except IOError:
+    _print_debug('History file not available.')
+atexit.register(readline.write_history_file, history_file)
 
-# Enable cross-session history.
-try:
-    import readline
-except ImportError:
-    _print_debug("Module readline not available.")
-else:
-    history_file = os.path.join(os.environ["HOME"], ".python_history")
-    try:
-        readline.read_history_file(history_file)
-    except IOError:
-        _print_debug('History file not available.')
-
-    import atexit
-    atexit.register(readline.write_history_file, history_file)
-
-    del history_file
-    del atexit
-    del readline
-
-# Clean up the evidence.
-del _print_debug
-del sys
+# Clean up the evidence
+del history_file
+del atexit
 del os
+del readline
+del rlcompleter
+del sys
 
 # Reset __vars__ to default, for transparency of rc file.
 try:

@@ -1,4 +1,4 @@
-B1;2403;0c#! /usr/bin/env python
+#! /usr/bin/env python
 
 import atexit
 import os
@@ -6,23 +6,13 @@ import readline
 import rlcompleter
 import sys
 
-def _print_debug(message):
-    """Print debug information to stderr.
-
-    Keyword arguments:
-    message -- message to print.
-    """
-    print >> sys.stderr, message
-
 # Enable tab completion
 readline.parse_and_bind("tab: complete")
 
 # Enable cross-session history
 history_file = os.path.join(os.environ["HOME"], ".python_history")
-try:
+if os.path.exists(history_file):
     readline.read_history_file(history_file)
-except IOError:
-    _print_debug('History file not available.')
 atexit.register(readline.write_history_file, history_file)
 
 # Clean up the evidence

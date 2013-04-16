@@ -39,7 +39,7 @@ for rcfile in glob.iglob('*rc'):
                 continue
 
             options = "\n[s]kip, [S]kip all, [o]verwite, [O]verwite all ? "
-            response = raw_input(options)
+            response = raw_input(options).strip()
 
             if response.lower() == 'o':
                 os.unlink(link_name)

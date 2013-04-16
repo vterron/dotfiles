@@ -18,6 +18,7 @@ dotfiles_dir = os.path.abspath(os.path.dirname(__file__))
 home_dir = os.path.expanduser('~')
 
 skip_all = False
+overwrite_all = False
 
 os.chdir(dotfiles_dir)
 for rcfile in glob.iglob('*rc'):
@@ -25,22 +26,29 @@ for rcfile in glob.iglob('*rc'):
     link_name = os.path.expanduser('~/.%s' % rcfile)
 
     if os.path.exists(link_name):
-        msg = "File already exists: %s" % os.path.basename(link_name)
-        print(msg, end = ' ')
 
-        if skip_all:
-            print('[Skip]')
-            continue
-
-        options = "\n[s]kip, [S]kip all, [o]verwite ? "
-        response = raw_input(options)
-
-        if response == 'o':
+        if overwrite_all:
             os.unlink(link_name)
+
         else:
-            if response == 'S':
-                skip_all = True
-            continue
+            msg = "File already exists: %s" % os.path.basename(link_name)
+            print(msg, end = ' ')
+
+            if skip_all:
+                print('[Skip]')
+                continue
+
+            options = "\n[s]kip, [S]kip all, [o]verwite, [O]verwite all ? "
+            response = raw_input(options)
+
+            if response.lower() == 'o':
+                os.unlink(link_name)
+                if response == 'O':
+                    overwrite_all = True
+            else:
+                if response == 'S':
+                    skip_all = True
+                continue
 
     os.symlink(source, link_name)
     print("`%s' -> `%s'" % (link_name, source))

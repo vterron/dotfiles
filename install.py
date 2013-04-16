@@ -21,9 +21,17 @@ os.chdir(dotfiles_dir)
 for rcfile in glob.iglob('*rc'):
     source = os.path.relpath(rcfile, home_dir)
     link_name = os.path.expanduser('~/.%s' % rcfile)
-    try:
-        os.symlink(source, link_name)
-        print("`%s' -> `%s'" % (link_name, source))
-    except OSError:
-        print("%s already exists" % link_name)
+
+    if os.path.exists(link_name):
+        print("File already exists: %s" % os.path.basename(link_name))
+        options = "[s]kip, [o]verwite ? "
+        response = raw_input(options).lower()
+
+        if response == 'o':
+            os.unlink(link_name)
+        else:
+            continue
+
+    os.symlink(source, link_name)
+    print("`%s' -> `%s'" % (link_name, source))
 

@@ -17,19 +17,29 @@ import os.path
 dotfiles_dir = os.path.abspath(os.path.dirname(__file__))
 home_dir = os.path.expanduser('~')
 
+skip_all = False
+
 os.chdir(dotfiles_dir)
 for rcfile in glob.iglob('*rc'):
     source = os.path.relpath(rcfile, home_dir)
     link_name = os.path.expanduser('~/.%s' % rcfile)
 
     if os.path.exists(link_name):
-        print("File already exists: %s" % os.path.basename(link_name))
-        options = "[s]kip, [o]verwite ? "
-        response = raw_input(options).lower()
+        msg = "File already exists: %s" % os.path.basename(link_name)
+        print(msg, end = ' ')
+
+        if skip_all:
+            print('[Skip]')
+            continue
+
+        options = "\n[s]kip, [S]kip all, [o]verwite ? "
+        response = raw_input(options)
 
         if response == 'o':
             os.unlink(link_name)
         else:
+            if response == 'S':
+                skip_all = True
             continue
 
     os.symlink(source, link_name)

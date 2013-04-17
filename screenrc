@@ -26,3 +26,11 @@ shell bash
 # %+Lw is the window starting after the current one
 #
 hardstatus alwayslastline "%{rw}%H%{wk} | %?%-Lw%?%{wb}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?"
+
+# Use C-z as the command key, instead of C-a. Why? Because in Emacs
+# that is also the default keyboard shortcut for 'beginning-of-line'.
+# I edit text in Emacs considerably more often than anything else, so
+# it makes more sense to redefine the command key of screen.
+# http://emacswiki.org/emacs/GnuScreen#toc1
+#
+escape ^Zz

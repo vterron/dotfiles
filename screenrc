@@ -1,0 +1,28 @@
+# Disable the display of license information when screen starts up
+startup_message off
+
+# The size, in lines, of the scrollback buffer
+defscrollback 25000
+
+# The command to be used to create a new shell (overrides $SHELL)
+shell bash
+
+# Customize the hardstatus line, reserving the last line of the
+# display for it even if the terminal supports it. The string that we
+# use makes screen show the hostname, available windows, whether they
+# are being logged and the one that is marked as active. Taken from
+# http://www.gertschepens.be/gnu-screen-screenrc
+#
+# %{rw} sets text color to red and background to white
+# %H is the hostname of the system
+# %{wk} sets text to white and background to black
+# %? shows only the following parameters if they are non-empty
+# %-Lw is the current window
+# %{wb} sets text to white and background to blue
+# %n is the window number
+# %f is the flags of the window
+# %t is the window title
+# (%u) is all other users on this window
+# %+Lw is the window starting after the current one
+#
+hardstatus alwayslastline "%{rw}%H%{wk} | %?%-Lw%?%{wb}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?"

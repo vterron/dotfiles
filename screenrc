@@ -34,3 +34,15 @@ hardstatus alwayslastline "%{rw}%H%{wk} | %?%-Lw%?%{wb}%n*%f %t%?(%u)%?%{wk}%?%+
 # http://emacswiki.org/emacs/GnuScreen#toc1
 #
 escape ^Zz
+
+# Enable dynamic windows titles. The "$ " part must match the end of
+# our shell prompt. We must modify .bashrc so that our shell sends a
+# null title-escape-sequence when $TERM is 'screen'. Screen uses this
+# escape sequence to identify the command being run and replace the
+# title of our current window.  "|bash", on the other hand, defines
+# the default name for the shell window. For more details, see:
+#
+# [1] http://retout.co.uk/blog/2007/08/23/automagic_screen_window_titles
+# [2] http://superuser.com/a/244397/147949
+#
+shelltitle "$ |bash"

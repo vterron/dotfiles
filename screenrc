@@ -9,23 +9,36 @@ shell bash
 
 # Customize the hardstatus line, reserving the last line of the
 # display for it even if the terminal supports it. The string that we
-# use makes screen show the hostname, available windows, whether they
-# are being logged and the one that is marked as active. Taken from
-# http://www.gertschepens.be/gnu-screen-screenrc
+# use makes screen show the hostname, time and current windows, using
+# red background for the one that is marked as active. This command is
+# a slightly modified version of that in Rafael Magana's screenrc:
+# https://github.com/rafmagana/screenrc
 #
-# %{rw} sets text color to red and background to white
+# %{gk} sets text color to green and background to black
 # %H is the hostname of the system
-# %{wk} sets text to white and background to black
-# %? shows only the following parameters if they are non-empty
+# %= pads the string to the display's width (like TeX's hfill)
+# %{wk} sets text color to white and background to black
+# The part to the next '%?' is displayed only if a '%' escape inside
+# the part expands to a non empty string
 # %-Lw is the current window
-# %{wb} sets text to white and background to blue
+# %{wr} sets text color to white and background to red
 # %n is the window number
 # %f is the flags of the window
 # %t is the window title
 # (%u) is all other users on this window
 # %+Lw is the window starting after the current one
+# %{g} sets text color to green
+# %{B} sets the 'blinking' attribute
+# %Y-%m-%d are the full year, month and day numbers
+# %{w} sets text color to white
+# %c is the current time HH:MM in 24h format
 #
-hardstatus alwayslastline "%{rw}%H%{wk} | %?%-Lw%?%{wb}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?"
+# The whitespace after the second %{wk} is required to disable the red
+# background even if there is not anything else to display (i.e., when
+# the last window is also the active one).
+#
+hardstatus alwayslastline
+hardstatus string '%{gk}[ %H ][%= %{wk}%?%-Lw%?%{wr}%n*%f%t%?(%u)%?%{wk} %?%+Lw%?%= %{g}][%{B}%Y-%m-%d %{w}%c %{g}]'
 
 # Use C-z as the command key, instead of C-a. Why? Because in Emacs
 # that is also the default keyboard shortcut for 'beginning-of-line'.

@@ -8,7 +8,9 @@ interactive session. """
 
 import atexit
 import os
+import re
 import readline
+import resource
 import rlcompleter
 import sys
 
@@ -21,11 +23,34 @@ if os.path.exists(history_file):
     readline.read_history_file(history_file)
 atexit.register(readline.write_history_file, history_file)
 
+def get_ram_size():
+    """ Return the physical memory size, in bytes """
+
+    with open('/proc/meminfo', 'rt') as fd:
+        regexp = "^MemTotal:\s*(\d+) kB$"
+        match = re.match(regexp, fd.read(), re.MULTILINE)
+        return int(match.group(1)) * 1024 # kB to bytes
+
+# Limit the memory available to Python to 3/4 of the total physical memory.
+# Otherwise, if we exceed all of the available RAM, everything starts being
+# loaded into swap and it takes *minutes* to switch to a command prompt and
+# kill the memory-greedy script.
+#
+# http://askubuntu.com/q/120765
+# http://stackoverflow.com/a/5433168/184363
+
+MAX_RAM = get_ram_size() * 0.75
+resource.setrlimit(resource.RLIMIT_AS, (MAX_RAM, resource.RLIM_INFINITY))
+del get_ram_size
+del MAX_RAM
+
 # Clean up the evidence
 del history_file
 del atexit
 del os
+del re
 del readline
+del resource
 del rlcompleter
 del sys
 
